@@ -1,50 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Table from './components/Table';
+import Header from './components/Header';
+import FilterContext from './context/FilterContext';
 import './App.css';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [info, setInfo] = useState([]);
-  useEffect(
-    () => {
-      async function fetchData() {
-        const data = await fetch('https://swapi.dev/api/planets');
-        const results = await data.json();
-        results.results.forEach((element) => {
-          delete element.residents;
-        });
-        setIsLoading(false);
-        setInfo(results.results);
-      }
-      fetchData();
-    },
-    [],
-  );
+  const [text, setText] = useState('');
+  const onChange = (eventTarget) => {
+    setText(eventTarget.value);
+    console.log(eventTarget.value);
+  };
   return (
-    <div>
-      {isLoading ? <p>Carregando...</p> : (
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(info[0]).map((key) => (
-                <th key={ key }>
-                  { key }
-                </th>))}
-            </tr>
-          </thead>
-          <tbody>
-            { info.map((item) => (
-              <tr key={ item.name }>
-                {Object.keys(item).map((keyValue, index) => (
-                  <td key={ index }>
-                    { item[keyValue] }
-                  </td>
-                ))}
-              </tr>
-            )) }
-          </tbody>
-        </table>
-      )}
-    </div>
+    <FilterContext.Provider value={ { name: text, onChange } }>
+      <Header />
+      <Table />
+    </FilterContext.Provider>
   );
 }
 
