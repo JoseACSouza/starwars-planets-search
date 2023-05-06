@@ -1,8 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import FilterContext from '../context/FilterContext';
 
 function Header() {
-  const { onChange, onClick, nameFilter } = useContext(FilterContext);
+  const { onChange, onClick, nameFilter, filterList } = useContext(FilterContext);
+  const [columnFilterList, setColumnFilterList] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ]);
   const [numberFilter, setNumberFilter] = useState({
     numberFilter: '0',
     comparisonFilter: 'maior que',
@@ -13,6 +16,17 @@ function Header() {
     const { name, value } = eventTarget;
     setNumberFilter({ ...numberFilter, [name]: value });
   };
+
+  useEffect(
+    () => {
+      const getFilterActives = filterList.map((e) => e.columnFilter);
+      setColumnFilterList((previousList) => previousList
+        .filter((columnName) => (
+          !getFilterActives.includes(columnName))));
+      setNumberFilter((a) => ({ ...a, columnFilter: 'population' }));
+    },
+    [filterList],
+  );
 
   return (
     <div>
@@ -29,11 +43,12 @@ function Header() {
         onChange={ (event) => onTemporaryChange(event.target) }
         name="columnFilter"
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        { columnFilterList
+          .map((option, index) => (
+            <option key={ option + index } value={ option }>
+              { option }
+            </option>
+          )) }
       </select>
       <select
         data-testid="comparison-filter"

@@ -8,9 +8,8 @@ export default function Table() {
   const [result, setResult] = useState([]);
   const [infoFiltered, setInfoFiltered] = useState([]);
   const {
-    filter, filterName,
+    filter, filterName, filterList, setFilterList,
   } = useContext(FilterContext);
-  const [filterList, setFilterList] = useState([filter]);
 
   useEffect(
     () => {
@@ -32,7 +31,7 @@ export default function Table() {
 
   useEffect(
     () => setFilterList((n) => [...n, filter]),
-    [filter],
+    [filter, setFilterList],
   );
 
   useEffect(
@@ -55,38 +54,37 @@ export default function Table() {
     [info, filterName, isLoading, filterList, infoFiltered],
   );
 
-  useEffect(
-    () => {
-      if (!isLoading) {
-        info.filter((element) => element.name.includes(filterName));
-      }
-    },
-    [info, filterName, isLoading],
-  );
-
   return (
     isLoading ? <p>Carregando...</p> : (
-      <table>
-        <thead>
-          <tr>
-            {Object.keys(info[0]).map((key) => (
-              <th key={ key }>
-                { key }
-              </th>))}
-          </tr>
-        </thead>
-        <tbody>
-          { result.map((item) => (
-            <tr key={ item.name }>
-              {Object.keys(item).map((keyValue, index) => (
-                <td key={ index }>
-                  { item[keyValue] }
-                </td>
-              ))}
-            </tr>
+      <div>
+        { filterList
+          .map((elementFilter) => (
+            <p key={ elementFilter.columnFilter }>
+              { elementFilter.columnFilter }
+            </p>
           )) }
-        </tbody>
-      </table>
+        <table>
+          <thead>
+            <tr>
+              {Object.keys(info[0]).map((key) => (
+                <th key={ key }>
+                  { key }
+                </th>))}
+            </tr>
+          </thead>
+          <tbody>
+            { result.map((item) => (
+              <tr key={ item.name }>
+                {Object.keys(item).map((keyValue, index) => (
+                  <td key={ index }>
+                    { item[keyValue] }
+                  </td>
+                ))}
+              </tr>
+            )) }
+          </tbody>
+        </table>
+      </div>
     )
   );
 }

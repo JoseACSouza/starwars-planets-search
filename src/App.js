@@ -1,28 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Table from './components/Table';
 import Header from './components/Header';
-import FilterContext from './context/FilterContext';
+import FilterProvider from './context/FilterProvider';
 import './App.css';
 
 function App() {
-  const [filter, setFilter] = useState({});
-  const [filterName, setFilterName] = useState('');
-
-  const onChange = (eventTarget) => {
-    const { value } = eventTarget;
-    setFilterName(value);
-  };
-
-  const onClick = (filters, eventTarget) => {
-    if (eventTarget.name === 'filter') {
-      setFilter({ ...filter, ...filters });
-    }
-  };
   return (
-    <FilterContext.Provider value={ { filter, onChange, onClick, filterName } }>
+    <FilterProvider>
       <Header />
       <Table />
-    </FilterContext.Provider>
+    </FilterProvider>
   );
 }
 
