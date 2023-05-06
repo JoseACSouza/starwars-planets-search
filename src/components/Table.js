@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
+import verify from '../Functions/verify';
 import FilterContext from '../context/FilterContext';
 
 export default function Table() {
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState([]);
   const [result, setResult] = useState([]);
-  const { name } = useContext(FilterContext);
+  const {
+    filter, filter: { numberFilter, comparisonFilter, columnFilter },
+  } = useContext(FilterContext);
+
   useEffect(
     () => {
       async function fetchData() {
@@ -23,8 +27,10 @@ export default function Table() {
     [],
   );
 
-  useEffect(() => setResult(info
-    .filter((data) => data.name.includes(name))), [info, name]);
+  useEffect(
+    () => setResult(verify(info, filter)),
+    [info, filter, numberFilter, comparisonFilter, columnFilter],
+  );
 
   return (
     isLoading ? <p>Carregando...</p> : (

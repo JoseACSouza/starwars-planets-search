@@ -5,13 +5,22 @@ import FilterContext from './context/FilterContext';
 import './App.css';
 
 function App() {
-  const [text, setText] = useState('');
+  const [filter, setFilter] = useState({
+    nameFilter: '',
+  });
   const onChange = (eventTarget) => {
-    setText(eventTarget.value);
-    console.log(eventTarget.value);
+    const { value } = eventTarget;
+    setFilter({ ...filter, nameFilter: value });
+  };
+
+  const onClick = (filters, eventTarget) => {
+    if (eventTarget.name === 'filter') {
+      setFilter({ ...filter, ...filters });
+      console.log(filters);
+    }
   };
   return (
-    <FilterContext.Provider value={ { name: text, onChange } }>
+    <FilterContext.Provider value={ { filter, onChange, onClick } }>
       <Header />
       <Table />
     </FilterContext.Provider>
