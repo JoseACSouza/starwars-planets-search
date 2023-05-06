@@ -2,9 +2,8 @@ import React, { useContext, useState } from 'react';
 import FilterContext from '../context/FilterContext';
 
 function Header() {
-  const { filter, onChange, onClick } = useContext(FilterContext);
+  const { onChange, onClick, nameFilter } = useContext(FilterContext);
   const [numberFilter, setNumberFilter] = useState({
-    nameFilter: '',
     numberFilter: '0',
     comparisonFilter: 'maior que',
     columnFilter: 'population',
@@ -22,7 +21,7 @@ function Header() {
         name="nameFilter"
         placeholder="Nome do Planeta"
         data-testid="name-filter"
-        value={ filter.nameFilter }
+        value={ nameFilter }
         onChange={ (event) => onChange(event.target) }
       />
       <select

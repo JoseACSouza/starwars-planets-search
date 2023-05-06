@@ -6,9 +6,11 @@ export default function Table() {
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState([]);
   const [result, setResult] = useState([]);
+  const [infoFiltered, setInfoFiltered] = useState([]);
   const {
-    filter, filter: { numberFilter, comparisonFilter, columnFilter },
+    filter, filterName,
   } = useContext(FilterContext);
+  const [filterList, setFilterList] = useState([filter]);
 
   useEffect(
     () => {
@@ -21,6 +23,7 @@ export default function Table() {
         setIsLoading(false);
         setInfo(results.results);
         setResult(results.results);
+        setInfoFiltered(results.results);
       }
       fetchData();
     },
@@ -28,8 +31,37 @@ export default function Table() {
   );
 
   useEffect(
-    () => setResult(verify(info, filter)),
-    [info, filter, numberFilter, comparisonFilter, columnFilter],
+    () => setFilterList((n) => [...n, filter]),
+    [filter],
+  );
+
+  useEffect(
+    () => {
+      if (filterList) {
+        filterList.forEach((f) => setInfoFiltered((partR) => verify(partR, f)));
+      }
+    },
+    [filterList, isLoading],
+  );
+
+  useEffect(
+    () => {
+      if (!isLoading) {
+        setResult(info
+          .filter((element) => infoFiltered.includes(element) && (
+            element.name.includes(filterName))));
+      }
+    },
+    [info, filterName, isLoading, filterList, infoFiltered],
+  );
+
+  useEffect(
+    () => {
+      if (!isLoading) {
+        info.filter((element) => element.name.includes(filterName));
+      }
+    },
+    [info, filterName, isLoading],
   );
 
   return (

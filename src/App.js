@@ -5,22 +5,21 @@ import FilterContext from './context/FilterContext';
 import './App.css';
 
 function App() {
-  const [filter, setFilter] = useState({
-    nameFilter: '',
-  });
+  const [filter, setFilter] = useState({});
+  const [filterName, setFilterName] = useState('');
+
   const onChange = (eventTarget) => {
     const { value } = eventTarget;
-    setFilter({ ...filter, nameFilter: value });
+    setFilterName(value);
   };
 
   const onClick = (filters, eventTarget) => {
     if (eventTarget.name === 'filter') {
       setFilter({ ...filter, ...filters });
-      console.log(filters);
     }
   };
   return (
-    <FilterContext.Provider value={ { filter, onChange, onClick } }>
+    <FilterContext.Provider value={ { filter, onChange, onClick, filterName } }>
       <Header />
       <Table />
     </FilterContext.Provider>
