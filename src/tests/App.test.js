@@ -2,29 +2,98 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FilterProvider from '../context/FilterProvider';
 import Header from '../components/Header';
-import { filterEqual, filterGreaterThen, filterLessThen, info } from './mock/mockPlanetsResults'
+import { filterEqual, filterGreaterThen, filterLessThen, info, filterList } from './mock/mockPlanetsResults'
 import verify from '../Functions/verify';
 import Table from '../components/Table';
 import App from '../App';
+import userEvent from '@testing-library/user-event';
+import FilterContext from '../context/FilterContext';
 
 
+describe('Componente Header e a funcionalidade dos filtros', () => {
 
-
-test('Verifica se os elementos de input são renderizados corretamente', async () => {
-  render(<FilterProvider>
-    <Header />
-  </FilterProvider>);
-
-  expect(screen.getByTestId('name-filter')).toBeInTheDocument();
-  expect(screen.getByTestId('value-filter')).toBeInTheDocument();
-  expect(screen.getByTestId('column-filter')).toBeInTheDocument();
-  expect(screen.getByTestId('comparison-filter')).toBeInTheDocument();
-  expect(screen.getByTestId('button-remove-filters')).toBeInTheDocument();
-  expect(screen.getByTestId('button-filter')).toBeInTheDocument();
+  it('Verifica se os elementos de input são renderizados corretamente', async () => {
+    render(<FilterProvider>
+      <Header />
+    </FilterProvider>);
   
+    expect(screen.getByTestId('name-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('value-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('column-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('comparison-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('button-remove-filters')).toBeInTheDocument();
+    expect(screen.getByTestId('button-filter')).toBeInTheDocument();
+    
+  });
+  
+  it('Verifica se uma função onChange é chamada ao digitar algo no input de texto e a função onClick é chamada ao apertar o botão de filtro', () => {
+    const mockOnChange = jest.fn();
+    const mockOnClick = jest.fn();
+    const { getByTestId } = render(
+      <FilterContext.Provider value={ {filterList, onChange: mockOnChange, onClick: mockOnClick} }
+      ><Header /> </FilterContext.Provider>);
+    const nameFilterInput = getByTestId('name-filter');
+    const buttonFilter = getByTestId('button-filter');
+  
+    userEvent.type(nameFilterInput, 'o');
+  
+    expect(mockOnChange).toHaveBeenCalledTimes(1);
+    expect(mockOnChange).toHaveBeenCalledWith(nameFilterInput);
+  
+    userEvent.click(buttonFilter);
+    expect(mockOnClick).toHaveBeenCalledTimes(1);
+  });
+  
+  it('Verifica se uma função onChange é chamada ao digitar algo no input de texto e a função onClick é chamada ao apertar o botão de filtro', () => {
+    const mockOnClick = jest.fn();
+    const mocksetInfoFiltered = jest.fn();
+  
+    const { getByTestId } = render(
+      <FilterContext.Provider value={ {filterList,
+        onClick: mockOnClick,
+         setInfoFiltered: mocksetInfoFiltered
+      } }
+      ><Table /> </FilterContext.Provider>);
+  
+  });  
 });
 
-test('Testa a função verify', () => {
+
+describe('Componente Table', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({
+        results: info,
+      }),
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('mensagem de carregando', async () => {
+    render(
+      <FilterProvider>
+      <Table />
+      </FilterProvider>
+    );
+    expect(await screen.findByText('Carregando...')).toBeInTheDocument();
+  });
+
+  it('componentes da tabela', async () => {
+    render(
+      <FilterProvider>
+      <Table />
+      </FilterProvider>
+    );
+    expect(await screen.findByText('Tatooine')).toBeInTheDocument();
+    expect(screen.getByText('Alderaan')).toBeInTheDocument();
+
+  });
+});
+
+it('Testa a função verify', () => {
 
   const resultExpected =     [
     {
@@ -52,8 +121,6 @@ test('Testa a função verify', () => {
 
 expect(verify(info, filterEqual)).toEqual(resultExpected);
 expect(verify(info, [])).toEqual(info);
-// console.log(verify(info, filterGreaterThen));
-// console.log(verify(info, filterLessThen));
 expect(verify(info, filterLessThen)).toEqual([
       {
         name: 'Bespin',
@@ -191,6 +258,4 @@ expect(verify(info, filterGreaterThen)).toEqual([
         url: 'https://swapi.dev/api/planets/10/'
       }
     ]);
-
-
 });

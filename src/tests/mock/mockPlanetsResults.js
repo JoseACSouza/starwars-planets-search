@@ -202,3 +202,7 @@ export const info =
     "comparisonFilter": "menor que",
     "columnFilter": "surface_water"
   };
+
+  export const filterList = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
