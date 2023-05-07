@@ -4,9 +4,10 @@ import Header from '../components/Header';
 import FilterContext from './FilterContext';
 
 function FilterProvider() {
-  const [filter, setFilter] = useState({});
   const [filterList, setFilterList] = useState([]);
   const [filterName, setFilterName] = useState('');
+  const [apiData, setApiData] = useState([]);
+  const [infoFiltered, setInfoFiltered] = useState([]);
 
   const onChange = (eventTarget) => {
     const { value } = eventTarget;
@@ -15,10 +16,22 @@ function FilterProvider() {
 
   const onClick = (filters, eventTarget) => {
     if (eventTarget.name === 'filter') {
-      setFilter({ ...filter, ...filters });
+      setFilterList((previous) => [...previous, { ...filters }]);
+    } else if (eventTarget.name === 'clearFilters') {
+      setFilterList([]);
+      setInfoFiltered(apiData);
     }
   };
-  const value = { filter, onChange, onClick, filterName, filterList, setFilterList };
+  const value = {
+    onChange,
+    onClick,
+    filterName,
+    filterList,
+    setFilterList,
+    apiData,
+    setApiData,
+    infoFiltered,
+    setInfoFiltered };
   return (
     <FilterContext.Provider value={ value }>
       <Header />

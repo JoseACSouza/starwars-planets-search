@@ -6,9 +6,8 @@ export default function Table() {
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState([]);
   const [result, setResult] = useState([]);
-  const [infoFiltered, setInfoFiltered] = useState([]);
   const {
-    filter, filterName, filterList, setFilterList,
+    filterName, filterList, setFilterList, setApiData, infoFiltered, setInfoFiltered,
   } = useContext(FilterContext);
 
   useEffect(
@@ -23,16 +22,18 @@ export default function Table() {
         setInfo(results.results);
         setResult(results.results);
         setInfoFiltered(results.results);
+        setApiData(results.results);
       }
       fetchData();
     },
-    [],
+    [setApiData, setInfoFiltered],
   );
 
-  useEffect(
-    () => setFilterList((n) => [...n, filter]),
-    [filter, setFilterList],
-  );
+  const deleteButton = (eventTarget) => {
+    setFilterList(filterList
+      .filter((targetName) => (targetName.columnFilter !== eventTarget.name)));
+    setInfoFiltered(info);
+  };
 
   useEffect(
     () => {
@@ -40,7 +41,7 @@ export default function Table() {
         filterList.forEach((f) => setInfoFiltered((partR) => verify(partR, f)));
       }
     },
-    [filterList, isLoading],
+    [filterList, setInfoFiltered],
   );
 
   useEffect(
@@ -59,9 +60,18 @@ export default function Table() {
       <div>
         { filterList
           .map((elementFilter) => (
-            <p key={ elementFilter.columnFilter }>
-              { elementFilter.columnFilter }
-            </p>
+            <div key={ elementFilter.columnFilter } data-testid="filter">
+              <p>
+                {elementFilter.columnFilter}
+              </p>
+              <button
+                name={ elementFilter.columnFilter }
+                type="button"
+                onClick={ (event) => deleteButton(event.target) }
+              >
+                X
+              </button>
+            </div>
           )) }
         <table>
           <thead>

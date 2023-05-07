@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import FilterContext from '../context/FilterContext';
 
 function Header() {
-  const { onChange, onClick, nameFilter, filterList } = useContext(FilterContext);
+  const { onChange, onClick, nameFilter, filterList,
+  } = useContext(FilterContext);
   const [columnFilterList, setColumnFilterList] = useState([
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ]);
@@ -73,6 +74,15 @@ function Header() {
         onClick={ (event) => onClick(numberFilter, event.target) }
       >
         Filtro
+      </button>
+
+      <button
+        type="button"
+        name="clearFilters"
+        data-testid="button-remove-filters"
+        onClick={ (event) => onClick(numberFilter, event.target) }
+      >
+        Limpar Filtros
       </button>
     </div>
   );
