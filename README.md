@@ -1,4 +1,5 @@
-# :construction: README em construção ! :construction:
+# Planetas de StarWars
+🌠 Neste projeto, recebia os dados de uma API com as informações dos planetas de StarWars e com isso eu desenvolvi os filtros para exibição
 <!-- Olá, Tryber!
 Esse é apenas um arquivo inicial para o README do seu projeto.
 É essencial que você preencha esse documento por conta própria, ok?
