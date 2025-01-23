@@ -7,7 +7,7 @@ export default function Table() {
   const [info, setInfo] = useState([]);
   const [result, setResult] = useState([]);
   const {
-    filterName, filterList, setFilterList, setApiData, infoFiltered, setInfoFiltered,
+    filterName, filterList, setApiData, infoFiltered, setInfoFiltered,
   } = useContext(FilterContext);
 
   useEffect(
@@ -28,12 +28,6 @@ export default function Table() {
     },
     [setApiData, setInfoFiltered],
   );
-
-  const deleteButton = (eventTarget) => {
-    setFilterList(filterList
-      .filter((targetName) => (targetName.columnFilter !== eventTarget.name)));
-    setInfoFiltered(info);
-  };
 
   useEffect(
     () => {
@@ -57,36 +51,28 @@ export default function Table() {
 
   return (
     isLoading ? <p>Carregando...</p> : (
-      <div>
-        { filterList
-          .map((elementFilter) => (
-            <div key={ elementFilter.columnFilter } data-testid="filter">
-              <p>
-                {elementFilter.columnFilter}
-              </p>
-              <button
-                name={ elementFilter.columnFilter }
-                type="button"
-                onClick={ (event) => deleteButton(event.target) }
-              >
-                X
-              </button>
-            </div>
-          )) }
-        <table>
-          <thead>
+      <div className="relative overflow-x-auto shadow-md rounded-md">
+        <table
+          className="w-full text-sm text-left rtl:text-right text-gray-500"
+        >
+          <thead
+            className="text-xs text-gray-700 uppercase bg-gray-50"
+          >
             <tr>
               {Object.keys(info[0]).map((key) => (
-                <th key={ key }>
+                <th key={ key } scope="col" className="px-6 py-3">
                   { key }
                 </th>))}
             </tr>
           </thead>
           <tbody>
             { result.map((item) => (
-              <tr key={ item.name }>
+              <tr
+                key={ item.name }
+                className="odd:bg-white even:bg-gray-50"
+              >
                 {Object.keys(item).map((keyValue, index) => (
-                  <td key={ index }>
+                  <td key={ index } className="px-6 py-4">
                     { item[keyValue] }
                   </td>
                 ))}

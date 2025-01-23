@@ -30,7 +30,7 @@ function Header() {
   );
 
   return (
-    <div>
+    <div className="flex justify-center my-3">
       <input
         type="text"
         name="nameFilter"
@@ -38,11 +38,13 @@ function Header() {
         data-testid="name-filter"
         value={ nameFilter }
         onChange={ (event) => onChange(event.target) }
+        className="mx-2 rounded-md p-1 bg-slate-100"
       />
       <select
         data-testid="column-filter"
         onChange={ (event) => onTemporaryChange(event.target) }
         name="columnFilter"
+        className="mx-2 rounded-md p-1 bg-slate-100"
       >
         { columnFilterList
           .map((option, index) => (
@@ -55,6 +57,7 @@ function Header() {
         data-testid="comparison-filter"
         onChange={ (event) => onTemporaryChange(event.target) }
         name="comparisonFilter"
+        className="mx-2 rounded-md p-1 bg-slate-100"
       >
         <option value="maior que">maior que</option>
         <option value="menor que">menor que</option>
@@ -66,12 +69,14 @@ function Header() {
         data-testid="value-filter"
         value={ numberFilter.numberFilter }
         onChange={ (event) => onTemporaryChange(event.target) }
+        className="mx-2 rounded-md p-1 bg-slate-100"
       />
       <button
         type="button"
         name="filter"
         data-testid="button-filter"
         onClick={ (event) => onClick(numberFilter, event.target) }
+        className="ml-2 rounded-l-md p-1 bg-cyan-700 hover:bg-cyan-600"
       >
         Filtro
       </button>
@@ -81,6 +86,7 @@ function Header() {
         name="clearFilters"
         data-testid="button-remove-filters"
         onClick={ (event) => onClick(numberFilter, event.target) }
+        className="rounded-r-md p-1 bg-red-400 hover:bg-red-500"
       >
         Limpar Filtros
       </button>

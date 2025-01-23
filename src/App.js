@@ -1,14 +1,12 @@
 import React from 'react';
-import Table from './components/Table';
-import Header from './components/Header';
 import FilterProvider from './context/FilterProvider';
-import './App.css';
+import './output.css';
+import Home from './pages/Home';
 
 function App() {
   return (
     <FilterProvider>
-      <Header />
-      <Table />
+      <Home />
     </FilterProvider>
   );
 }

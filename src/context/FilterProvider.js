@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Table from '../components/Table';
-import Header from '../components/Header';
 import FilterContext from './FilterContext';
+import Home from '../pages/Home';
 
 function FilterProvider() {
   const [filterList, setFilterList] = useState([]);
@@ -34,8 +33,7 @@ function FilterProvider() {
     setInfoFiltered };
   return (
     <FilterContext.Provider value={ value }>
-      <Header />
-      <Table />
+      <Home />
     </FilterContext.Provider>
   );
 }
