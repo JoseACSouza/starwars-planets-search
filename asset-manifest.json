@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/starwars-planets-search/static/css/main.499eb48f.css",
+    "main.js": "/starwars-planets-search/static/js/main.b2e9021c.js",
+    "static/media/bg.jpg": "/starwars-planets-search/static/media/bg.66fe9662d7d88314e28c.jpg",
+    "static/media/logo.png": "/starwars-planets-search/static/media/logo.ed5e0659adf765fcfd2a.png",
+    "index.html": "/starwars-planets-search/index.html",
+    "main.499eb48f.css.map": "/starwars-planets-search/static/css/main.499eb48f.css.map",
+    "main.b2e9021c.js.map": "/starwars-planets-search/static/js/main.b2e9021c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.499eb48f.css",
+    "static/js/main.b2e9021c.js"
+  ]
+}
